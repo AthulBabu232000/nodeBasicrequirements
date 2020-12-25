@@ -16,6 +16,8 @@ const publicDirectory = path.join(__dirname, './public');
 
 app.set('view engine', 'hbs');
 app.use(express.static(publicDirectory));
+app.use(express.urlencoded({extended:false}));
+app.use(express.json());
 db.connect((err)=>{
     if(err){
         console.log('error', err);
@@ -24,9 +26,16 @@ db.connect((err)=>{
     }
 });
 
-app.get('/', (req, res) =>{
-    res.render('index');
-});
+// app.get('/', (req, res) =>{
+//     res.render('index');
+// });
+
+// app.get('/register', (req, res) =>{
+//     res.render('register');
+// });
+
+app.use('/', require('./router/pages'));
+app.use('/auth', require('./router/auth'));
 app.listen(5001, () =>{
     console.log('port number 5001 working properly');
 })
