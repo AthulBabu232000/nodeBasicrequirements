@@ -1,6 +1,7 @@
 const express = require('express');
 const mysql = require('mysql');
 const dotenv = require('dotenv');
+const cookieParser = require('cookie-parser');
 const path = require('path');
 const app = express();
 dotenv.config ({path:'./.env'});
@@ -18,6 +19,7 @@ app.set('view engine', 'hbs');
 app.use(express.static(publicDirectory));
 app.use(express.urlencoded({extended:false}));
 app.use(express.json());
+app.use(cookieParser());
 db.connect((err)=>{
     if(err){
         console.log('error', err);
@@ -26,13 +28,7 @@ db.connect((err)=>{
     }
 });
 
-// app.get('/', (req, res) =>{
-//     res.render('index');
-// });
 
-// app.get('/register', (req, res) =>{
-//     res.render('register');
-// });
 
 app.use('/', require('./router/pages'));
 app.use('/auth', require('./router/auth'));
